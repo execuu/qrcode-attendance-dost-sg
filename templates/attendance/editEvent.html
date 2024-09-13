@@ -1,0 +1,21 @@
+{% block index %}
+
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">
+                        <i class="fa-solid fa-pen-to-square fa-lg"> Update Event Record(s)</i>
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'attendance:editEvent' event.id %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </form>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+{% endblock %}

@@ -1,0 +1,9 @@
+asgiref==3.8.1
+Django==5.1.1
+django-extensions==3.2.3
+django-sslserver==0.22
+pillow==10.4.0
+pypng==0.20220715.0
+qrcode==7.4.2
+sqlparse==0.5.1
+typing_extensions==4.12.2

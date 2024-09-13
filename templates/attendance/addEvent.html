@@ -1,0 +1,23 @@
+{% block index %}
+
+    <h3 class="text-center m-4"></h3>
+        <div class="row justify-content-center">
+            <div class="col-6">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">
+                        <i class="fa-solid fa-address-card fa-lg"> Add Events/Activities/Initiatives</i>
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'attendance:addEvent' %}" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Add</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </form>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+
+{% endblock %}

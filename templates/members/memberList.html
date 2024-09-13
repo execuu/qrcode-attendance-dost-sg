@@ -1,0 +1,199 @@
+{% extends "index.html" %}
+
+{% block index %}
+{% include 'navbar.html' %}
+
+<div class="container-fluid">
+    <div class="row">
+      <div class="col-6">
+      <h3 class="m-4 d-inline-block">All Members</h3>
+      </div>
+      <div class="col-6 text-end">
+        <button type="button" class="btn btn-primary m-4" id="addMemberButton">Add Member</button>
+      </div>      
+      <div class="col-12">
+        {% if members %}
+          <div class="card border-danger ms-4 me-4 mb-4">
+            <div class="card-header">
+              <i class="fa-solid fa-user-graduate fa-lg"></i> Members Records
+            </div>
+            <div class="card-body">
+              <p class="card-text">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Student No.</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Degree, Program & Year Level</th>
+                        <th scope="col">College/Unit</th>
+                        <th scope="col">Scholarship Type</th>
+                        <th scope="col">Contact No.</th>
+                        <th scope="col">Personal Email</th>
+                        <th scope="col">CSPC Email</th>
+                        <th scope="col">Home Address</th>
+                        <th scope="col">Position</th>
+                        <th scope="col">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for members in members %}
+                        <tr>
+                          <td>{{ members.studentNumber }}</td>
+                          <td>{{ members.firstName }} {{ members.middleName }} {{ members.lastName }}</td>
+                          <td>{{ members.program_and_year }}</td>
+                          <td>{{ members.college }}</td>
+                          <td>{{ members.scholarshipType }}</td>
+                          <td>{{ members.cpNum }}</td>
+                          <td>{{ members.personalEmail }}</td>
+                          <td>{{ members.cspcEmail }}</td>
+                          <td>{{ members.address }}</td>
+                          <td>{{ members.position }}</td>
+                          <td>
+                            <button class="btn btn-success me-1" href="{% url 'members:members' %}" data-bs-toggle="modal" data-bs-target="#myModal{{members.id}}">
+                              <i class="fa-solid fa-circle-info fa-lg"></i>
+                            </button>
+
+                            <!-- Modal - View Events Attended -->
+                            
+                            <div class="modal" id="myModal{{members.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
+                              <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">
+                                      Member: {{ members.firstName }} {{ members.middleName }} {{ members.lastName }}
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true"></span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <ul>
+                                      <li>Name: {{ member.firstName }} {{ member.middleName }} {{ member.lastName }}</li>
+                                      <li>Events Attended:</li>
+                                      <ul>
+                                          {% for attendance in events_attended %}
+                                              <li>{{ attendance.event.eventName }} on {{ attendance.event.created_at }}</li>
+                                          {% endfor %}
+                                      </ul>
+                                    </ul>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <!-- Edit Member Modal -->
+                            <button type="button" class="btn btn-warning me-1 editMemberButton" data-bs-toggle="modal" data-bs-target="#edit{{members.id}}" data-member-id="{{ members.id }}">
+                              <i class="fa-solid fa-pen-to-square fa-lg"></i>
+                            </button>
+
+                            <div class="modal fade" role="dialog" id="edit{{members.id}}" tabindex="-1" aria-labelledby="editMemberModalLabel" aria-hidden="true">
+                              <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                  <h5 class="modal-title" id="editMemberModalLabel">Update Member</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <!-- Form content will be loaded here -->
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          
+                                                                                
+                            <script>
+                              document.addEventListener('DOMContentLoaded', function() {
+                                const editMemberButtons = document.querySelectorAll('.editMemberButton');
+                                editMemberButtons.forEach(button => {
+                                    button.addEventListener('click', function() {
+                                        const memberId = button.getAttribute('data-member-id');
+                                        fetch(`/edit_member/${memberId}/`)
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                const modal = document.getElementById(`edit${memberId}`);
+                                                modal.querySelector('.modal-body').innerHTML = data.html_form;
+                                            });
+                                    });
+                                });
+                            });
+                            </script>
+
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete{{members.id}}">
+                              <i class="fa-solid fa-trash-can fa-lg"></i>
+                            </button>
+
+                            <!-- Modal - Delete Member -->
+                            <div class="modal fade" id="delete{{members.id}}" tabindex="-1" aria-labelledby="deleteMemberModalLabel" aria-hidden="true">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title">
+                                      Member: {{ members.firstName }} {{ members.middleName }} {{ members.lastName }}
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true"></span>
+                                    </button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <p>Are you sure you want to delete this member?</p>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <form action="{% url 'members:deleteMember' members.id %}" method="POST">
+                                      {% csrf_token %}
+                                      <input type="submit" class="btn btn-primary" value="Delete">
+                                    </form>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </p>
+            </div>
+          </div>
+        {% else %}
+          <h5 class="alert alert-primary ms-4 me-4">No Records.</h5>
+        {% endif %}
+
+<!-- Add Member Modal -->
+<div class="modal fade" id="addMemberModal" tabindex="-1" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl"> <!-- Add 'modal-lg' class here -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addMemberModalLabel">Add a member</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="addMemberModalBody">
+        <!-- Form content will be loaded here -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const addMemberModal = new bootstrap.Modal(document.getElementById('addMemberModal'));
+
+    document.getElementById('addMemberButton').addEventListener('click', function() {
+      fetch("{% url 'members:addMember' %}")
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('addMemberModalBody').innerHTML = html;
+          addMemberModal.show();
+        });
+    });
+  });
+</script>
+
+{% endblock %}

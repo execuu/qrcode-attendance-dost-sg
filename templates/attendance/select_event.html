@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block index %}
+<div class="container-fluid">
+    <div class="card border-primary mb-3" style="max-width: 20rem;">
+      <div class="card-header">Attendance for {{ member.firstName }} {{ member.middleName }} {{ member.lastName }}</div>
+      <div class="card-body">
+        <h4 class="card-title">Member Information</h4>
+        <p class="card-text">Student Number: {{ member.studentNumber }}
+            <br>
+            Program and Year: {{ member.program_and_year }}
+            <br>
+            College/Unit: {{ member.college }}
+            <br>
+            Type of Scholarship: {{ member.scholarshipType }}
+            <br>
+            Contact Number: {{ member.cpNum }}
+            <br>
+            Personal Email: {{ member.personalEmail }}
+            <br>
+            CSPC Email: {{ member.cspcEmail }}
+            <br>
+            Address: {{ member.address }}
+            <br>
+            Position: {{ member.position }}
+        </p>
+        <ul class="list-group list-group-flush">
+            {% for event in events %}
+            <li class="list-group-item">
+                Select Event:
+                <a href="{% url 'attendance:confirm_attendance' event.id member.id %}" class="btn btn-primary w-100">
+                    {{ event.eventName }} ({{ event.created_at }})
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+      </div>
+    </div>
+</div>
+{% endblock %}
