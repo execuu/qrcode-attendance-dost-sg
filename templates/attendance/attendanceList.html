@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-6">
-      <h3 class="m-4 d-inline-block">All Events</h3>
+      <h3 class="m-4 d-inline-block" style="color: white;">All Events</h3>
       </div>
       <div class="col-6 text-end">
         <button type="button" class="btn btn-primary m-4" id="addEventButton">Add Event</button>
@@ -40,27 +40,37 @@
 
                               <!-- Modal - View Attendees -->
                               <div class="modal fade" id="myModal{{ event.id }}" tabindex="-1" aria-labelledby="myModalLabel{{ event.id }}" aria-hidden="true">
-                                  <div class="modal-dialog modal-xl" role="document">
-                                      <div class="modal-content">
-                                          <div class="modal-header">
-                                              <h5 class="modal-title">
-                                                  Event: {{ event.eventName }} {{ event.created_at }}
-                                              </h5>
-                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                                  <span aria-hidden="true"></span>
-                                              </button>
-                                          </div>
-                                          <div class="modal-body">
-                                              <ul class="list-unstyled">
-                                                  <li>Attendees: </li> <!-- You can use Django template tags to populate this list dynamically -->
-                                              </ul>
-                                          </div>
-                                          <div class="modal-footer">
-                                              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                                          </div>
-                                      </div>
-                                  </div>
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">
+                                                Event: {{ event.eventName }} {{ event.created_at }}
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true"></span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ul class="list-unstyled">
+                                                <li>Attendees: </li>
+                                                <ul>
+                                                    {% for attendance in attendances %}
+                                                        {% if attendance.event.id == event.id %}
+                                                            <li>{{ attendance.member.firstName }} {{ attendance.member.lastName }}</li>
+                                                        {% endif %}
+                                                    {% empty %}
+                                                        <li>No attendees.</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
                               </div>
+
 
                               <!-- Edit Event Modal -->
                               <button type="button" class="btn btn-warning me-1 editEventButton" data-bs-toggle="modal" data-bs-target="#edit{{event.id}}" data-member-id="{{ event.id }}">

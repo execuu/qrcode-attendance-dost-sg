@@ -1,40 +1,53 @@
 {% extends "index.html" %}
+{% load auth_tags %}
 
 {% block index %}
-<div class="container-fluid">
-    <div class="card border-primary mb-3" style="max-width: 20rem;">
-      <div class="card-header">Attendance for {{ member.firstName }} {{ member.middleName }} {{ member.lastName }}</div>
+{% include 'navbar.html' %}
+
+<div class="container text-center mt-5" style="max-width: fit-content; margin-inline: auto;">
+    <div class="card border-primary mb-3" style="max-width: 50rem;">
+      <div class="card-header"><h4>Member Information</h4></div>
       <div class="card-body">
-        <h4 class="card-title">Member Information</h4>
-        <p class="card-text">Student Number: {{ member.studentNumber }}
-            <br>
-            Program and Year: {{ member.program_and_year }}
-            <br>
-            College/Unit: {{ member.college }}
-            <br>
-            Type of Scholarship: {{ member.scholarshipType }}
-            <br>
-            Contact Number: {{ member.cpNum }}
-            <br>
-            Personal Email: {{ member.personalEmail }}
-            <br>
-            CSPC Email: {{ member.cspcEmail }}
-            <br>
-            Address: {{ member.address }}
-            <br>
-            Position: {{ member.position }}
-        </p>
-        <ul class="list-group list-group-flush">
-            {% for event in events %}
-            <li class="list-group-item">
-                Select Event:
-                <a href="{% url 'attendance:confirm_attendance' event.id member.id %}" class="btn btn-primary w-100">
-                    {{ event.eventName }} ({{ event.created_at }})
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
+        <div class="info-item d-flex justify-content-between"><span><strong>Student Number</strong>:</span> <span>{{ member.studentNumber }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>Name</strong>:</span> <span>{{ member.firstName }} {{ member.middleName }} {{ member.lastName }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>Program and Year</strong>:</span> <span>{{ member.program_and_year }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>College/Unit</strong>:</span> <span>{{ member.college }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>Type of Scholarship</strong>:</span> <span>{{ member.scholarshipType }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>Contact Number</strong>:</span> <span>{{ member.cpNum }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>Email</strong>:</span> <span>{{ member.personalEmail }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>CSPC Email</strong>:</span> <span>{{ member.cspcEmail }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>Address</strong>:</span> <span>{{ member.address }}</span></div>
+        <div class="info-item d-flex justify-content-between"><span><strong>Position</strong>:</span> <span>{{ member.position }}</span></div>
       </div>
+      {% if user|has_group:"Officers" %}
+      <ul class="list-group list-group-flush">
+        {% for event in events %}
+        <li class="list-group-item">
+            Select Event:
+            <a href="{% url 'attendance:confirm_attendance' event.id member.id %}" class="btn btn-primary w-100">
+                {{ event.eventName }} ({{ event.created_at }})
+            </a>
+        </li>
+        {% endfor %}
+      {% endif %}
+      </ul>
     </div>
-</div>
+    <style>
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px; /* Space between items */
+        }
+        .info-item span {
+            flex: 1; /* Ensures that the spans take up equal space */
+            text-align: left; /* Aligns the label to the left */
+            padding-right: 5px; /* Adds some padding between the label and the value */
+        }
+        .info-item span:last-child {
+            text-align: right; /* Aligns the value to the right */
+        }
+
+    </style>
+  </div>
 {% endblock %}

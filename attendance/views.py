@@ -8,17 +8,25 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Event, Attendance
 from .forms import AttendanceForm
 from members.models import Members
+from django.contrib.auth.decorators import login_required
+from common.decorators import *
 
 
 
 # Create your views here.
-def attendanceList(request):
-    return render(request, 'attendance/attendanceList.html', ({'events': Event.objects.all()}))
 
+@officer_required
+def attendanceList(request):
+    events = Event.objects.all()
+    attendances = Attendance.objects.select_related('member').all()  # Get all attendances with related members
+    return render(request, 'attendance/attendanceList.html', {'events': events, 'attendances': attendances})
+
+@officer_required
 def viewEvent(request, id):
     event = Event.objects.get(pk=id)
     return HttpResponseRedirect(reverse('attendance:attendanceList'))
 
+@officer_required
 def addEvent(request):
     if request.method == 'POST':
         form = AttendanceForm(request.POST, request.FILES)
@@ -35,6 +43,7 @@ def addEvent(request):
 
     return render(request, 'attendance/addEvent.html', {'form': form})
 
+@officer_required
 def editEvent(request, id):
     event = Event.objects.get(pk=id)
     if request.method == 'POST':
@@ -54,6 +63,7 @@ def editEvent(request, id):
     html_form = render_to_string('attendance/editEvent.html', context, request=request)
     return JsonResponse({'html_form': html_form})
 
+@officer_required
 def deleteEvent(request, id):
     if request.method == 'POST':
         event = Event.objects.get(pk=id)
@@ -61,16 +71,20 @@ def deleteEvent(request, id):
         messages.success(request, f"event: {event.eventName} has been deleted successfully!")
     return HttpResponseRedirect(reverse('attendance:attendanceList'))
 
+@officer_required
 def eventDetail(request, id):
     event = Event.objects.get(pk=id)
     attendances = Attendance.objects.filter(event=event)
     
-    member = request.GET.get('member')
+    member_id = request.GET.get('member_id')
+    member = Members.objects.get(pk=member_id) if member_id else None
+    
     return render(request, 'attendance/eventDetail.html', {
         'event': event,
         'attendances': attendances,
-        'member': member,  
+        'member': member,
     })
+
 # Redirect users to the attendance confirmation page based on the scanned QR code
 def qr_redirect(request, studentNumber):
     try:
@@ -95,6 +109,7 @@ def scan_member(request, studentNumber):
         'events': events
     })
 
+@officer_required
 # Confirm the attendance for the selected event and member
 def confirm_attendance(request, event_id, member_id):
     event = get_object_or_404(Event, id=event_id)
@@ -113,7 +128,7 @@ def confirm_attendance(request, event_id, member_id):
 
     return redirect('attendance:eventDetail', id=event_id)
 
-
+@officer_required
 # Record the member's attendance
 def record_attendance(request, event_id, member_id):
     event = get_object_or_404(Event, id=event_id)

@@ -1,12 +1,39 @@
 {% extends "index.html" %}
 
-{% block title %}<title>Home</title>{% endblock %}
+{% block title %}
+<title>Home</title>
+{% endblock %}
 
 {% block index %}
 {% include "navbar.html" %}
 
-    <h1>This is the homepage.</h1>
+{% if user.is_authenticated %}
+    <h1 class="page-header container mt-5 ms-4">Iskolar ng Agham,<br>Teknolohiya at ng Bayan</h1>
+    <p class="page-subtitle container mt-4 ms-4">QR Code Attendance System</p>
+    <p class="page-subtitle container mt-4 ms-4">Welcome, {{ user.get_username }}!</p>
+{% else %}
+    <p class="text-center text-white mt-5">Please <a href="{% url 'login' %}">log in</a> to access this page.</p>
+{% endif %}
+
+<style>
+    .page-header {
+        color: white;
+        font-size: 48px; /* Adjust font size as necessary */
+        text-shadow: -5px 4px 5px #000000; /* Optional: adds shadow for better readability */
+        font-family: 'Times New Roman', sans-serif; /* Specify the font-family if different */
+        font-weight: bold;
+        letter-spacing: 5px; /* Adjust letter spacing as necessary */
+    }
+
+    .page-subtitle {
+        color: white;
+        font-size: 36px; /* Adjust font size as necessary */
+        text-shadow: -5px 4px 5px #000000; /* Optional: adds shadow for better readability */
+        text-align: justify; /* Centers the subtitle */
+        margin-top: 10px; /* Space between header and subtitle */
+        font-family: 'Times New Roman', sans-serif; /* Specify the font-family if different */
+        font-weight: lighter; /* Less emphasis compared to the header */
+    }
+</style>
 
 {% endblock %}
-
-

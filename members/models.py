@@ -20,6 +20,15 @@ RA_10612 = 'RA 10612'
 
 
 class Members(models.Model):
+    
+    OFFICER = 'Officer'
+    MEMBER = 'Member'
+
+    ROLE_CHOICES = [
+        (OFFICER, 'Officer'),
+        (MEMBER, 'Member'),
+    ]
+
     studentNumber = models.PositiveIntegerField()
     firstName = models.CharField(max_length=50)
     middleName = models.CharField(max_length=50)
@@ -32,6 +41,7 @@ class Members(models.Model):
     cspcEmail = models.EmailField()
     address = models.CharField(max_length=100)
     position = models.CharField(max_length=50, blank=True)
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default=MEMBER)
     qr_code = models.ImageField(upload_to='qr_codes/', blank=True)
 
     def __str__(self):

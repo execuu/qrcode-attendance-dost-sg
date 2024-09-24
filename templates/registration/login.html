@@ -1,0 +1,62 @@
+
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}
+<title>Camarines Sur Polytechnic Colleges - Scholars' Guild | LOGIN</title>
+{% endblock %}
+
+{% block index %}
+<!-- Full-screen container with backdrop filter applied -->
+<div class="container-fluid align-items-center" style="height: 100vh; backdrop-filter: blur(5px);">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-md-4 col-lg-5">
+            <div class="text-center">
+                <img width="75" src="{% static 'img/logo.ico' %}" alt="CSPC DOST SG LOGO">
+                <img width="75" src="{% static 'img/sei_logo.png' %}" alt="DOST SEI LOGO">
+            </div>
+            <h2 class="text-center mb-4" style="color: white; font-family: 'Baskerville', 'Times New Roman', serif; line-height: 0.9;">
+                <span style="font-size: 1.2rem;">CAMARINES SUR POLYTECHNIC COLLEGES</span><br>
+                <span style="font-size: 1.2rem;">Department of Science and Technology</span><br>
+            </h2>
+            <h2 class="text-center mb-5" style="color: white; font-family: 'Baskerville', 'Times New Roman', serif; line-height: 0.1;">
+                <span style="font-size: 2rem;">SCHOLARS' GUILD</span>
+            </h2>
+            <!-- Card with outline -->
+            <div class="card login-card" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.5); backdrop-filter: blur(0px);">
+                <!-- Card body with background image and outline -->
+                <div class="card-body p-4" style="color: white; background-image: url('/static/img/background.jpg'); background-size: cover; background-position: center; outline: 3px solid rgba(241, 236, 236, 0.5);">
+                    <form method="POST" class="form-signin">
+                        {% csrf_token %}
+                        <!-- Email input with centered icon -->
+                        <div class="form-group mb-3" style="position: relative;">
+                            <label for="id_username">Email</label>
+                            <i class="fa-solid fa-circle-user" style="position: absolute; left: 10px; top: 65%; transform: translateY(-50%); font-size: 1.2rem; color: #888;"></i>
+                            <input type="email" id="id_username" name="username" class="form-control" placeholder="e.g. iskolarngbayan@my.cspc.edu.ph" required autofocus style="padding-left: 40px; height: 3rem;">
+                        </div>
+                        <!-- Password input -->
+                        <div class="form-group mb-3" style="position: relative;">
+                            <label for="id_password">Password</label>
+                            <i class="fa-solid fa-lock" style="position: absolute; left: 10px; top: 65%; transform: translateY(-50%); font-size: 1.2rem; color: #888;"></i>
+                            <input type="password" id="id_password" name="password" class="form-control" placeholder="e.g. iskolarngbayan123" required autofocus style="padding-left: 40px; height: 3rem;">
+                        </div>
+                        {% if form.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                Username or password is incorrect. Please try again.
+                            </div>
+                        {% endif %}
+                        <div class="d-grid">
+                            <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer class="mt-auto mb-4 text-center">
+            <span style="color: white">
+                Copyright &copy; <script>document.write(new Date().getFullYear())</script> DOST Scholars' Guild - Camarines Sur Polytechnic Colleges.
+            </span>
+        </footer>
+    </div>
+</div>
+{% endblock %}

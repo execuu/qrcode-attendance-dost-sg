@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="row">
       <div class="col-6">
-      <h3 class="m-4 d-inline-block">All Members</h3>
+      <h3 class="m-4 d-inline-block" style="color: white;">All Members</h3>
       </div>
       <div class="col-6 text-end">
         <button type="button" class="btn btn-primary m-4" id="addMemberButton">Add Member</button>
@@ -55,26 +55,22 @@
                             </button>
 
                             <!-- Modal - View Events Attended -->
-                            
                             <div class="modal" id="myModal{{members.id}}" tabindex="-1" aria-labelledby="myModalLabel1" aria-hidden="true">
                               <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content">
                                   <div class="modal-header">
-                                    <h5 class="modal-title">
-                                      Member: {{ members.firstName }} {{ members.middleName }} {{ members.lastName }}
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true"></span>
-                                    </button>
+                                    <h5 class="modal-title">Member: {{ members.firstName }} {{ members.middleName }} {{ members.lastName }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                   </div>
                                   <div class="modal-body">
-                                    <ul>
-                                      <li>Name: {{ member.firstName }} {{ member.middleName }} {{ member.lastName }}</li>
+                                    <ul class="list-unstyled">
                                       <li>Events Attended:</li>
                                       <ul>
-                                          {% for attendance in events_attended %}
-                                              <li>{{ attendance.event.eventName }} on {{ attendance.event.created_at }}</li>
-                                          {% endfor %}
+                                        {% for attendance in members.attendance_set.all %}
+                                          <li>{{ attendance.event.eventName }} on {{ attendance.timestamp }}</li>
+                                        {% empty %}
+                                          <li>No events attended.</li>
+                                        {% endfor %}
                                       </ul>
                                     </ul>
                                   </div>
@@ -84,6 +80,7 @@
                                 </div>
                               </div>
                             </div>
+
 
                             <!-- Edit Member Modal -->
                             <button type="button" class="btn btn-warning me-1 editMemberButton" data-bs-toggle="modal" data-bs-target="#edit{{members.id}}" data-member-id="{{ members.id }}">

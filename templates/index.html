@@ -9,7 +9,7 @@
     {% endblock %}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'img/logo.ico' %}" rel="shorcut icon" type="image/x-icon">
+    <link href="{% static 'img/logo.ico' %}" rel="shortcut icon" type="image/x-icon">
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script src="https://unpkg.com/@zxing/library@latest"></script>
     <style>
@@ -23,21 +23,20 @@
         main {
             flex-grow: 1;
         }
+        .login-background {
+            background-image: url('/static/img/background.jpg');
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+        }
     </style>
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100 login-background">
     <main>
         {% block index %}
         {% endblock %}
     </main>
-    <footer class="mt-auto mb-4">
-        <div class="text-center">
-            <span>
-                Copyright &copy; <script>document.write(new Date().getFullYear())</script> DOST Scholars' Guild - Camarines Sur Polytechnic Colleges.
-            </span>
-        </div>
-    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js" integrity="sha512-r6rDA7W6ZeQhvl8S7yRVQUKVHdexq+GAlNkNNqVC7YyIV+NwqCTJe2hDWCiffTyRNOeGEzRRJ9ifvRm/HCzGYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

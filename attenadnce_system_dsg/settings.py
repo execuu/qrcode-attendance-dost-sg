@@ -61,7 +61,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'members',
+    'accounts',
     'attendance',
+    'common',
+    'crispy_bootstrap5',
+    'crispy_forms',
     'sslserver',
 ]
 
@@ -73,6 +77,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'accounts.middleware.GroupMiddleware',
 ]
 
 ROOT_URLCONF = 'attenadnce_system_dsg.urls'
@@ -156,3 +161,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Optional for production u
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = '/login/'

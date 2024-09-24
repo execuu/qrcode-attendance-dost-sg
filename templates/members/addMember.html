@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-body">
                         <form action="{% url 'members:addMember' %}" method="POST" enctype="multipart/form-data">
-                            <!-- {% csrf_token %} -->
+                            {% csrf_token %}
                             {{ form.as_p }}
                             <button type="submit" class="btn btn-primary">Add</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
